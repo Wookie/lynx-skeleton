@@ -22,7 +22,7 @@ int old_stack;
 // after setting up the chips.
 // So in a while we will be called again. On the 2nd call we would like to
 // pass the execution to our intro-module.
-int main(void)
+void main(void)
 {
     asm("lda _first_time");
     asm("cmp #0");
@@ -36,47 +36,51 @@ int main(void)
     // Choose next application to run
     // It is a good idea to come back here to resident memory
     // to load in the next application.
-    while (1) {
-        switch (next_application) {
-	default:
-	case NEXT_APPLICATION:
-	    switch (last_application) {
-	    default:
-		next_application = RESTART_LYNX;
-		break;
-	    case RESTART_LYNX:
-		next_application = SKETCH;
-		break;
-	    }
-	    break;
-	case PREV_APPLICATION:
-	    switch (last_application) {
-	    default:
-		next_application = RESTART_LYNX;
-		break;
-	    case RESTART_LYNX:
-		next_application = SKETCH;
-		break;
-	    }
-	    break;
-	case START_IRQS:
-	    start_irqs();
-	    last_application = next_application;
-	    next_application = intro();
-	    old_stack = *(int *)0;
-	    break;
-	case RESTART_LYNX:
-	    FileLoadFile(INTRO_FILENR);
-	    last_application = next_application;
-	    next_application = intro();
-	    break;
-	case SKETCH:
-	    FileLoadFile(SKETCH_FILENR);
-	    last_application = next_application;
-	    next_application = sketch();
-	    break;
+    while (1) 
+    {
+        switch (next_application) 
+        {
+            default:
+            case NEXT_APPLICATION:
+                switch (last_application) 
+                {
+                    default:
+                        next_application = RESTART_LYNX;
+                        break;
+                    case RESTART_LYNX:
+                        next_application = SKETCH;
+                        break;
+                }
+                break;
+            case PREV_APPLICATION:
+                switch (last_application) 
+                {
+                    default:
+                        next_application = RESTART_LYNX;
+                        break;
+                    case RESTART_LYNX:
+                        next_application = SKETCH;
+                        break;
+                }
+                break;
+            case START_IRQS:
+                start_irqs();
+                last_application = next_application;
+                next_application = intro();
+                old_stack = *(int *)0;
+                break;
+            case RESTART_LYNX:
+                FileLoadFile(INTRO_FILENR);
+                last_application = next_application;
+                next_application = intro();
+                break;
+            case SKETCH:
+                FileLoadFile(SKETCH_FILENR);
+                last_application = next_application;
+                next_application = sketch();
+                break;
         }
-	if ((*(int *)0) != old_stack)
+        if ((*(int *)0) != old_stack)
             next_application = RESTART_LYNX;
     }
 }

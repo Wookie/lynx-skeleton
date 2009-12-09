@@ -20,7 +20,7 @@ extern char silence[];
 extern char lynxtgi[];
 #define tgi_sprite(spr) tgi_ioctl(0, (unsigned)(spr))
 #define tgi_flip() tgi_ioctl(1, 0)
-#define tgi_setbgcolor(col) tgi_ioctl(2, col)
+//#define tgi_setbgcolor(col) tgi_ioctl(2, col)
 extern void init_irq(void);
 extern void install_irq(unsigned char num, unsigned func );
 extern void vbl(void);
@@ -138,7 +138,7 @@ int intro(void)
 	pause = 0;
 	update_needed = 1;
 	lastInterrupt = interruptOccurred;
-	tgi_setpalette(&pal);
+	tgi_setpalette(pal);
 	tgi_sprite(&Stitle);
 	drawPending = 1;
 
@@ -209,7 +209,7 @@ int intro(void)
 		// is already on screen and there is a reason to create
 		// a new image for the user
         if (!drawPending && update_needed) {
-			tgi_setpalette(&pal);
+			tgi_setpalette(pal);
 			tgi_sprite(&Stitle);
 			drawPending = 1;
 			update_needed = 0;

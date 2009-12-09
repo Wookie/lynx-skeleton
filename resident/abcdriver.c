@@ -85,7 +85,8 @@ static void set_sound_engine(
     int *settings)
 {
 	int taps, backup;
-	char octave, integrate;
+	/*char octave;*/
+    char integrate;
 
 	taps = settings[0];
 	backup = settings[1];
